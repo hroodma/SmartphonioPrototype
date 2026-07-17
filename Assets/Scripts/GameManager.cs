@@ -4,6 +4,7 @@ public class GameManager : MonoBehaviour
 {
     private IInputSystem _input;
     [SerializeField] private Player _player;
+    [SerializeField] private FixedJoystick _joystick;
 
     private void Start()
     {
@@ -16,5 +17,5 @@ public class GameManager : MonoBehaviour
         _input.InputUpdate();
     }
 
-    private IInputSystem CreateInput() => new DesktopInputSystem();
+    private IInputSystem CreateInput() => new MobileJoystickInputSystem(_joystick);
 }

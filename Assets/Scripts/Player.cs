@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        //_input.Upd();
+        //_input.InputUpdate();
     }
 
     private void FixedUpdate()
