@@ -17,5 +17,7 @@ public class GameManager : MonoBehaviour
         _input.InputUpdate();
     }
 
-    private IInputSystem CreateInput() => new MobileJoystickInputSystem(_joystick);
+    private IInputSystem CreateInput() => new MobileGyroscopeInputSystem();
+    //private IInputSystem CreateInput() => new MobileJoystickInputSystem(_joystick);
+    //private IInputSystem CreateInput() => new DesktopInputSystem();
 }
