@@ -1,10 +1,19 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IPlayer
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _rotationSpeed = 360f;
+
+    [SerializeField] private int _maxHealth = 3;
+    private int _health;
+    public int Health => _health;
+
+    public event Action OnPlayerDied;
+    public event Action<int, int> OnHealthChanged;
+
     private IInputSystem _input;
     private Vector3 _movement;
     private Quaternion _targetRotation;
@@ -13,7 +22,6 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        //SetInput(new DesktopInputSystem());
         _rb = GetComponent<Rigidbody>();
     }
 
@@ -21,11 +29,6 @@ public class Player : MonoBehaviour
     {
         _input = input;
         input.OnAxis += Move;
-    }
-
-    private void Update()
-    {
-        //_input.InputUpdate();
     }
 
     private void FixedUpdate()
@@ -53,5 +56,33 @@ public class Player : MonoBehaviour
         {
             _targetRotation = Quaternion.LookRotation(new Vector3(_movement.x, 0, _movement.z));
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (_health > 0)
+        {
+            _health -= damage;
+            OnHealthChanged?.Invoke(_health, _maxHealth);
+        }
+
+        if (_health <= 0)
+        {
+            OnPlayerDied?.Invoke();
+        }
+    }
+
+    public void Heal(int value)
+    {
+        if (_health >= _maxHealth)
+            return;
+
+        _health += value;
+        OnHealthChanged?.Invoke(_health, _maxHealth);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
     }
 }
