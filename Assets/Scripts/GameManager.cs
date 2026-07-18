@@ -25,6 +25,10 @@ public class GameManager : MonoBehaviour
             case IDamagable damagable:
                 player.TakeDamage(damagable.Damage);
                 break;
+
+            case IScoreChanger scoreChanger:
+                player.AddScore(scoreChanger.Score);
+                break;
         }
     }
 

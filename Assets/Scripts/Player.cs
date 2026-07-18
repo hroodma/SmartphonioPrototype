@@ -4,6 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour, IPlayer
 {
+    private int _score;
+
     [SerializeField] private float _speed;
     [SerializeField] private float _rotationSpeed = 360f;
 
@@ -82,6 +84,12 @@ public class Player : MonoBehaviour, IPlayer
 
         _health += value;
         OnHealthChanged?.Invoke(_health, _maxHealth);
+    }
+
+    public void AddScore(int score)
+    {
+        _score += score;
+        Debug.Log($"{_score}");
     }
 
     private void OnTriggerEnter(Collider other)

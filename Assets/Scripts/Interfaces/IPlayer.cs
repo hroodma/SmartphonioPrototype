@@ -11,5 +11,6 @@ public interface IPlayer
 
     void TakeDamage(int damage);
     void Heal(int value);
+    void AddScore(int score);
     //void Boost(Booster booster, int value);
 }
