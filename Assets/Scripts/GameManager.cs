@@ -33,6 +33,10 @@ public class GameManager : MonoBehaviour
             case IBooster booster:
                 player.Boost(booster.BoostType, booster.MultipleValue, booster.TimeAction);
                 break;
+
+            case IHealable healable:
+                player.Heal(healable.HealAmount);
+                break;
         }
     }
 

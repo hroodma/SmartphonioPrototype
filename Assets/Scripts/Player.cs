@@ -85,6 +85,7 @@ public class Player : MonoBehaviour, IPlayer
 
         _health += value;
         OnHealthChanged?.Invoke(_health, _maxHealth);
+        Debug.Log($"{_health}");
     }
 
     public void AddScore(int score)
