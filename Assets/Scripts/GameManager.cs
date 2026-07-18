@@ -29,6 +29,10 @@ public class GameManager : MonoBehaviour
             case IScoreChanger scoreChanger:
                 player.AddScore(scoreChanger.Score);
                 break;
+
+            case IBooster booster:
+                player.Boost(booster.BoostType, booster.MultipleValue, booster.TimeAction);
+                break;
         }
     }
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -90,6 +91,31 @@ public class Player : MonoBehaviour, IPlayer
     {
         _score += score;
         Debug.Log($"{_score}");
+    }
+
+    public void Boost(BoostType boostType, float multiple, float timeAction)
+    {
+        switch (boostType)
+        {
+            case BoostType.Speed:
+                StartCoroutine(SpeedBoost(multiple, timeAction));
+                break;
+        }
+    }
+
+    private IEnumerator SpeedBoost(float multiple, float timeAction)
+    {
+        float defaultSpeed = _speed;
+        _speed *= multiple;
+
+        try
+        {
+            yield return new WaitForSeconds(timeAction);
+        }
+        finally
+        {
+            _speed = defaultSpeed;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
