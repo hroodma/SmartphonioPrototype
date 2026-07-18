@@ -13,6 +13,7 @@ public class Player : MonoBehaviour, IPlayer
 
     public event Action OnPlayerDied;
     public event Action<int, int> OnHealthChanged;
+    public event Action<IPlayer, IInteractable> OnInteracted;
 
     private IInputSystem _input;
     private Vector3 _movement;
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour, IPlayer
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _health = _maxHealth;
     }
 
     public void SetInput(IInputSystem input)
@@ -64,6 +66,7 @@ public class Player : MonoBehaviour, IPlayer
         {
             _health -= damage;
             OnHealthChanged?.Invoke(_health, _maxHealth);
+            Debug.Log($"{_health}");
         }
 
         if (_health <= 0)
@@ -83,6 +86,7 @@ public class Player : MonoBehaviour, IPlayer
 
     private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.TryGetComponent<IInteractable>(out var interactable))
+            OnInteracted?.Invoke(this, interactable);
     }
 }

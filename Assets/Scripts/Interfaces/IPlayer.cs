@@ -5,6 +5,7 @@ public interface IPlayer
 {
     event Action<int, int> OnHealthChanged;
     event Action OnPlayerDied;
+    event Action<IPlayer, IInteractable> OnInteracted;
 
     void SetInput(IInputSystem input);
 

@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     {
         _input = CreateInput();
         _player.SetInput(_input);
+        _player.OnInteracted += Interact;
     }
 
     private void Update()
@@ -17,7 +18,17 @@ public class GameManager : MonoBehaviour
         _input.InputUpdate();
     }
 
-    private IInputSystem CreateInput() => new MobileGyroscopeInputSystem();
-    //private IInputSystem CreateInput() => new MobileJoystickInputSystem(_joystick);
+    private void Interact(IPlayer player, IInteractable obj)
+    {
+        switch (obj)
+        {
+            case IDamagable damagable:
+                player.TakeDamage(damagable.Damage);
+                break;
+        }
+    }
+
+    //private IInputSystem CreateInput() => new MobileGyroscopeInputSystem();
+    private IInputSystem CreateInput() => new MobileJoystickInputSystem(_joystick);
     //private IInputSystem CreateInput() => new DesktopInputSystem();
 }
