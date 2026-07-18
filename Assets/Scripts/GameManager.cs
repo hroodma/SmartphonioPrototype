@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -6,16 +7,28 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private FixedJoystick _joystick;
 
+    [SerializeField] private InputManager _inputManager;
+    [SerializeField] private GameUI _gameUI;
+
     private void Start()
     {
-        _input = CreateInput();
-        _player.SetInput(_input);
-        _player.OnInteracted += Interact;
+        StartCoroutine(Initialization());
     }
 
     private void Update()
     {
         _input.InputUpdate();
+    }
+
+    private IEnumerator Initialization()
+    {
+        _inputManager.OnInputSystemChanged += ChangeInputSystem;
+        _input = _inputManager.DefaultInputSystem;
+
+        _player.SetInput(_input);
+        _player.OnInteracted += Interact;
+
+        yield break;
     }
 
     private void Interact(IPlayer player, IInteractable obj)
@@ -40,7 +53,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void ChangeInputSystem()
+    {
+        _input = _inputManager.CurrentInputSystem;
+        _player.SetInput(_input);
+
+        switch (_input)
+        {
+            case DesktopInputSystem:
+                _gameUI.HideJoystick(_joystick);
+                break;
+
+            case MobileJoystickInputSystem:
+                _gameUI.ShowJoystick(_joystick);
+                break;
+
+            case MobileGyroscopeInputSystem:
+                _gameUI.HideJoystick(_joystick);
+                break;
+        }
+    }
     //private IInputSystem CreateInput() => new MobileGyroscopeInputSystem();
-    private IInputSystem CreateInput() => new MobileJoystickInputSystem(_joystick);
+    //private IInputSystem CreateInput() => new MobileJoystickInputSystem(_joystick);
     //private IInputSystem CreateInput() => new DesktopInputSystem();
 }
