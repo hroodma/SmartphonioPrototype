@@ -7,7 +7,8 @@ public class Player : MonoBehaviour, IPlayer
 {
     private int _score;
 
-    [SerializeField] private float _speed;
+    private float _currentSpeed;
+    [SerializeField] private float _defaultSpeed = 5f;
     [SerializeField] private float _rotationSpeed = 360f;
 
     [SerializeField] private int _maxHealth = 3;
@@ -24,10 +25,11 @@ public class Player : MonoBehaviour, IPlayer
 
     Rigidbody _rb;
 
-    private void Awake()
+    private void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _health = _maxHealth;
+        _currentSpeed = _defaultSpeed;
     }
 
     public void SetInput(IInputSystem input)
@@ -48,7 +50,7 @@ public class Player : MonoBehaviour, IPlayer
 
         var direction = new Vector3(_movement.x, 0, _movement.z).normalized;
 
-        Vector3 newPosition = _rb.position + direction * _speed * Time.fixedDeltaTime;
+        Vector3 newPosition = _rb.position + direction * _currentSpeed * Time.fixedDeltaTime;
         _rb.MovePosition(newPosition);
 
         _rb.MoveRotation(Quaternion.RotateTowards(_rb.rotation, _targetRotation, _rotationSpeed * Time.fixedDeltaTime));
@@ -106,8 +108,8 @@ public class Player : MonoBehaviour, IPlayer
 
     private IEnumerator SpeedBoost(float multiple, float timeAction)
     {
-        float defaultSpeed = _speed;
-        _speed *= multiple;
+        _currentSpeed = _defaultSpeed;
+        _currentSpeed *= multiple;
 
         try
         {
@@ -115,7 +117,7 @@ public class Player : MonoBehaviour, IPlayer
         }
         finally
         {
-            _speed = defaultSpeed;
+            _currentSpeed = _defaultSpeed;
         }
     }
 
