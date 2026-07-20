@@ -26,7 +26,9 @@ public class GameManager : MonoBehaviour
         _inputManager.OnInputSystemChanged += ChangeInputSystem;
         _input = _inputManager.DefaultInputSystem;
 
-        _player = CreatePlayer();
+        if (_player == null)
+            _player = CreatePlayer();
+
         _player.SetInput(_input);
         _player.OnInteracted += Interact;
         _player.OnPlayerDied += GameOver;
