@@ -79,5 +79,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame() => StartCoroutine(Initialization());
 
+    public void QuitGame() => Application.Quit();
+
     private IPlayer CreatePlayer() => FindFirstObjectByType<Player>();
 }
