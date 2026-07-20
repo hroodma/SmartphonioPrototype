@@ -4,7 +4,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     private IInputSystem _input;
-    [SerializeField] private Player _player;
+    [SerializeField] private IPlayer _player;
     [SerializeField] private FixedJoystick _joystick;
 
     [SerializeField] private InputManager _inputManager;
@@ -25,9 +25,13 @@ public class GameManager : MonoBehaviour
         _inputManager.OnInputSystemChanged += ChangeInputSystem;
         _input = _inputManager.DefaultInputSystem;
 
+        _player = CreatePlayer();
         _player.SetInput(_input);
         _player.OnInteracted += Interact;
+        _player.OnPlayerDied += GameOver;
         _player.Initialization();
+
+        _gameUI.InitializeGameUI(_joystick, _input);
 
         yield break;
     }
@@ -59,22 +63,13 @@ public class GameManager : MonoBehaviour
         _input = _inputManager.CurrentInputSystem;
         _player.SetInput(_input);
 
-        switch (_input)
-        {
-            case DesktopInputSystem:
-                _gameUI.HideJoystick(_joystick);
-                break;
-
-            case MobileJoystickInputSystem:
-                _gameUI.ShowJoystick(_joystick);
-                break;
-
-            case MobileGyroscopeInputSystem:
-                _gameUI.HideJoystick(_joystick);
-                break;
-        }
+        _gameUI.ShowHideJoystick(_joystick, _input);
     }
-    //private IInputSystem CreateInput() => new MobileGyroscopeInputSystem();
-    //private IInputSystem CreateInput() => new MobileJoystickInputSystem(_joystick);
-    //private IInputSystem CreateInput() => new DesktopInputSystem();
+
+    private void GameOver()
+    {
+        _gameUI.ShowHideGameOverScreen(_player.IsDied);
+    }
+
+    private IPlayer CreatePlayer() => FindFirstObjectByType<Player>();
 }

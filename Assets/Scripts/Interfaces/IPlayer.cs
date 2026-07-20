@@ -8,6 +8,8 @@ public interface IPlayer
     event Action OnPlayerDied;
     event Action<IPlayer, IInteractable> OnInteracted;
 
+    bool IsDied { get; }
+
     void SetInput(IInputSystem input);
     void Initialization();
 

@@ -14,6 +14,8 @@ public class Player : MonoBehaviour, IPlayer
     [SerializeField] private int _maxHealth = 3;
     private int _health;
     public int Health => _health;
+    private bool _isDied;
+    public bool IsDied => _isDied;
 
     public event Action OnPlayerDied;
     public event Action<int, int> OnHealthChanged;
@@ -45,6 +47,7 @@ public class Player : MonoBehaviour, IPlayer
         _score = 0;
         _currentSpeed = _defaultSpeed;
         _health = _maxHealth;
+        _isDied = false;
         transform.position = Vector3.zero;
         OnInitialized?.Invoke(_score, _maxHealth);
     }
@@ -87,6 +90,7 @@ public class Player : MonoBehaviour, IPlayer
 
         if (_health <= 0)
         {
+            _isDied = true;
             OnPlayerDied?.Invoke();
         }
     }

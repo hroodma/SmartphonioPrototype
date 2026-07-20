@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameUI : MonoBehaviour
 {
     [SerializeField] private GameObject _changeInputPanel;
+    [SerializeField] private GameObject _gameOverScreen;
 
     private void Update()
     {
@@ -12,13 +13,12 @@ public class GameUI : MonoBehaviour
         }
     }
 
-    public void ShowJoystick(FixedJoystick joystick)
+    public void InitializeGameUI(FixedJoystick joystick, IInputSystem input)
     {
-        joystick.gameObject.SetActive(true);
+        ShowHideJoystick(joystick, input);
+        _gameOverScreen.SetActive(false);
     }
 
-    public void HideJoystick(FixedJoystick joystick)
-    {
-        joystick.gameObject.SetActive(false);
-    }
+    public void ShowHideJoystick(FixedJoystick joystick, IInputSystem input) => joystick.gameObject.SetActive(input is MobileJoystickInputSystem);
+    public void ShowHideGameOverScreen(bool turn) => _gameOverScreen.SetActive(turn);
 }
