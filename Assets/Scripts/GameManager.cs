@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
 
         _gameUI.InitializeGameUI(_joystick, _input);
 
+        _input.Unlock();
         yield break;
     }
 
@@ -69,6 +70,7 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         _gameUI.ShowHideGameOverScreen(_player.IsDied);
+        _input.Lock();
     }
 
     public void RestartGame() => StartCoroutine(Initialization());

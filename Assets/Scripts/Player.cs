@@ -91,6 +91,7 @@ public class Player : MonoBehaviour, IPlayer
         if (_health <= 0)
         {
             _isDied = true;
+            _currentSpeed = 0;
             OnPlayerDied?.Invoke();
         }
     }
