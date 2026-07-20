@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
 
         _player.SetInput(_input);
         _player.OnInteracted += Interact;
+        _player.Initialization();
 
         yield break;
     }

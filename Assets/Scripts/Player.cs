@@ -17,6 +17,8 @@ public class Player : MonoBehaviour, IPlayer
 
     public event Action OnPlayerDied;
     public event Action<int, int> OnHealthChanged;
+    public event Action<int> OnScoreChanged;
+    public event Action<int, int> OnInitialized;
     public event Action<IPlayer, IInteractable> OnInteracted;
 
     private IInputSystem _input;
@@ -36,6 +38,15 @@ public class Player : MonoBehaviour, IPlayer
     {
         _input = input;
         input.OnAxis += Move;
+    }
+
+    public void Initialization()
+    {
+        _score = 0;
+        _currentSpeed = _defaultSpeed;
+        _health = _maxHealth;
+        transform.position = Vector3.zero;
+        OnInitialized?.Invoke(_score, _maxHealth);
     }
 
     private void FixedUpdate()
@@ -93,6 +104,7 @@ public class Player : MonoBehaviour, IPlayer
     public void AddScore(int score)
     {
         _score += score;
+        OnScoreChanged?.Invoke(_score);
         Debug.Log($"{_score}");
     }
 
