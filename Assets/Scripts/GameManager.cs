@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
         _player.Initialization();
 
         _gameUI.InitializeGameUI(_joystick, _input);
+
         _objectsSpawner.RandomSpawn();
 
         _input.Unlock();
@@ -79,7 +80,16 @@ public class GameManager : MonoBehaviour
         _input.Lock();
     }
 
-    public void RestartGame() => StartCoroutine(Initialization());
+    public void RestartGame()
+    {
+        _inputManager.OnInputSystemChanged -= ChangeInputSystem;
+        _player.OnInteracted -= Interact;
+        _player.OnPlayerDied -= GameOver;
+
+        _objectsSpawner.ResetSpawner();
+
+        StartCoroutine(Initialization());
+    }
 
     public void QuitGame() => Application.Quit();
 

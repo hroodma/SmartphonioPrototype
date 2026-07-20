@@ -22,6 +22,11 @@ public class ObjectsSpawner : MonoBehaviour
         obj.transform.position = RandomPosition().position;
     }
 
+    public void ResetSpawner()
+    {
+        _busySpawnpoints.Clear();
+    }
+
     private Transform RandomPosition()
     {
         Transform randomPos = _spawnpoints[Random.Range(0, _spawnpoints.Count)];
