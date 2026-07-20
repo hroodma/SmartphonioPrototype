@@ -71,5 +71,7 @@ public class GameManager : MonoBehaviour
         _gameUI.ShowHideGameOverScreen(_player.IsDied);
     }
 
+    public void RestartGame() => StartCoroutine(Initialization());
+
     private IPlayer CreatePlayer() => FindFirstObjectByType<Player>();
 }
