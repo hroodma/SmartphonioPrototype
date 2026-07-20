@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private InputManager _inputManager;
     [SerializeField] private GameUI _gameUI;
+    [SerializeField] private ObjectsSpawner _objectsSpawner;
 
     private void Start()
     {
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
         _player.Initialization();
 
         _gameUI.InitializeGameUI(_joystick, _input);
+        _objectsSpawner.RandomSpawn();
 
         _input.Unlock();
         yield break;
@@ -57,6 +59,8 @@ public class GameManager : MonoBehaviour
                 player.Heal(healable.HealAmount);
                 break;
         }
+
+        _objectsSpawner.PlaceObject(obj.gameObject);
     }
 
     private void ChangeInputSystem()
